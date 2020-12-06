@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/ui/mainmenu/MainMenu.cs" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 85.0
+margin_bottom = 600.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+margin_right = 85.0
+margin_bottom = 64.0
+texture = ExtResource( 2 )
+
+[node name="StartServer" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 68.0
+margin_right = 85.0
+margin_bottom = 88.0
+text = "Start Server"
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 92.0
+margin_right = 85.0
+margin_bottom = 112.0
+
+[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 116.0
+margin_right = 85.0
+margin_bottom = 136.0
+
+[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 140.0
+margin_right = 85.0
+margin_bottom = 160.0
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/StartServer" to="." method="OnStartServerPressed"]

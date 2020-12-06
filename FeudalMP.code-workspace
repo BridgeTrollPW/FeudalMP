@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+    ],
+    "settings": {
+        "godot_tools.editor_path": "/home/luis/.local/bin/Godot_v3.2.3-stable_mono_x11.64"
+    }
+}

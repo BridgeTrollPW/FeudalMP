@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/ui/serverconfig/ServerConfig.cs" type="Script" id=1]
+
+[node name="ServerConfig" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 26.0
+margin_bottom = 17.0
+text = "Port"
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer"]
+margin_left = 30.0
+margin_right = 130.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 100, 20 )
+text = "9913"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 24.0
+margin_right = 1024.0
+margin_bottom = 44.0
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 85.0
+margin_bottom = 20.0
+text = "Start Server"
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/Button" to="." method="OnServerStartPressed"]

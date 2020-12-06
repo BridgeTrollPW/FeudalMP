@@ -15,7 +15,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Feudal Mp"
+config/name="FeudalMP"
+run/main_scene="res://src/Programm.tscn"
 config/icon="res://icon.png"
 
 [rendering]
