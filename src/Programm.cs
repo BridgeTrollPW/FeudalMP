@@ -1,9 +1,39 @@
+using System.Linq;
+using FeudalMP.assets.ui.debugoverlay;
+using FeudalMP.assets.ui.mainmenu;
+using FeudalMP.src.foundation;
+using FeudalMP.src.network.server;
+using FeudalMP.src.util;
 using Godot;
 
-public class Programm : Node
+namespace FeudalMP.src
 {
-    public override void _Ready()
+    public class Programm : Node
     {
-        GetTree().ChangeScene("res://assets/ui/mainmenu/MainMenu.tscn");
+        public override async void _Ready()
+        {
+            Logger log = new Logger(nameof(Programm));
+            log.Info("Waiting for rootnode to complete setup");
+            await ToSignal(GetTree().Root, "ready");
+            GetTree().Root.AddChild(NodeTreeManager.Instance);
+
+            if (OS.GetCmdlineArgs().Contains("--server"))
+            {
+
+                Server server = new Server
+                {
+                    Port = (int)ProjectSettings.GetSetting("FeudalMP/server/port")
+                };
+                NodeTreeManager.Instance.ServiceLayer.AddChild(server);
+                server.Start();
+
+            }
+            else
+            {
+                log.Info("Starting client application");
+                NodeTreeManager.Instance.HUDLayer.AddChild(AssetManager.Load<DebugOverlay>(AssetManager.PATH_UI + "/debugoverlay/DebugOverlay.tscn"));
+                NodeTreeManager.Instance.GUILayer.AddChild(AssetManager.Load<MainMenu>(AssetManager.PATH_UI + "/mainmenu/MainMenu.tscn"));
+            }
+        }
     }
 }

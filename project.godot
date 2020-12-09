@@ -13,11 +13,27 @@ _global_script_class_icons={
 
 }
 
+[FeudalMP]
+
+server/port=9331
+
 [application]
 
 config/name="FeudalMP"
 run/main_scene="res://src/Programm.tscn"
 config/icon="res://icon.png"
+
+[editor]
+
+main_run_args="--server"
+
+[input]
+
+debug_scenetree={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777253,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [rendering]
 

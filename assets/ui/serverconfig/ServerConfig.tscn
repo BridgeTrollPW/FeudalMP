@@ -42,8 +42,30 @@ margin_top = 24.0
 margin_right = 1024.0
 margin_bottom = 44.0
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
+[node name="StartServerButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
 margin_right = 85.0
 margin_bottom = 20.0
 text = "Start Server"
-[connection signal="pressed" from="VBoxContainer/HBoxContainer2/Button" to="." method="OnServerStartPressed"]
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 48.0
+margin_right = 1024.0
+margin_bottom = 68.0
+
+[node name="StopServerButton" type="Button" parent="VBoxContainer/HBoxContainer4"]
+margin_right = 84.0
+margin_bottom = 20.0
+text = "Stop Server"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 1024.0
+margin_bottom = 92.0
+
+[node name="Back" type="Button" parent="VBoxContainer/HBoxContainer3"]
+margin_right = 42.0
+margin_bottom = 20.0
+text = "Back"
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/StartServerButton" to="." method="OnServerStartPressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer4/StopServerButton" to="." method="OnStopServerButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/Back" to="." method="OnBackPressed"]
