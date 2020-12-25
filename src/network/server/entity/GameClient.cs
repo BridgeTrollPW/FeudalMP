@@ -3,12 +3,15 @@ namespace FeudalMP.src.network.server.entity
     public class GameClient
     {
         private int id;
-        private GameClientState state = GameClientState.CONNECTING;
+        private GameClientState state;
 
         public int Id { get => id; set => id = value; }
         public GameClientState State { get => state; set => state = value; }
 
-
+        public GameClient()
+        {
+            state = GameClientState.CONNECTING;
+        }
     }
 
     public enum GameClientState

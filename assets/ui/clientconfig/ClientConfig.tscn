@@ -1,8 +1,11 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/ui/clientconfig/ClientConfig.cs" type="Script" id=1]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -62,7 +65,26 @@ margin_top = 48.0
 margin_right = 1024.0
 margin_bottom = 68.0
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Connect" type="Button" parent="VBoxContainer/HBoxContainer"]
 margin_right = 64.0
 margin_bottom = 20.0
 text = "Connect"
+
+[node name="Back" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 68.0
+margin_right = 110.0
+margin_bottom = 20.0
+text = "Back"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 114.0
+margin_right = 273.0
+margin_bottom = 20.0
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 159.0
+margin_bottom = 20.0
+text = "Send Connect Message"
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Connect" to="." method="OnConnectPressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Back" to="." method="OnBackPressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/VBoxContainer/Button" to="." method="OnMessageConnectPressed"]

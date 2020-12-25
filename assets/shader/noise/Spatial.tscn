@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/shader/noise/noise.shader" type="Shader" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=4]
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 1 )
+shader_param/speed = 0.5
+shader_param/intensity = 0.699
+shader_param/layers = 1.0
+shader_param/noise = SubResource( 4 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="CSGSphere" type="CSGSphere" parent="."]
+transform = Transform( -0.999811, -0.0194241, 0, 0.0155346, -0.799607, -0.600323, 0.0116607, -0.600209, 0.799758, 0.27476, 0.22437, 0 )
+material = SubResource( 2 )
+
+[node name="CSGSphere2" type="CSGBox" parent="."]
+transform = Transform( -0.999811, -0.0194241, 0, 0.0194241, -0.999811, 0, 0, 0, 1, -2.54299, 0, 0 )
+material = SubResource( 2 )
+
+[node name="CSGSphere3" type="CSGCylinder" parent="."]
+transform = Transform( -0.999811, -0.0194241, 0, 0.0194241, -0.999811, 0, 0, 0, 1, 2.7335, 0, 0 )
+material = SubResource( 2 )

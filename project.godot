@@ -15,17 +15,13 @@ _global_script_class_icons={
 
 [FeudalMP]
 
-server/port=9331
+server/port=9913
 
 [application]
 
 config/name="FeudalMP"
 run/main_scene="res://src/Programm.tscn"
 config/icon="res://icon.png"
-
-[editor]
-
-main_run_args="--server"
 
 [input]
 

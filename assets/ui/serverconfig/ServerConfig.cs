@@ -9,7 +9,7 @@ namespace FeudalMP.assets.ui.serverconfig
     {
         Button startServerButton;
         Button stopServerButton;
-        
+
         public override void _Ready()
         {
 
@@ -18,7 +18,9 @@ namespace FeudalMP.assets.ui.serverconfig
             if (NodeTreeManager.Instance.ServiceLayer.HasNode("./Server"))
             {
                 startServerButton.Disabled = true;
-            } else {
+            }
+            else
+            {
                 stopServerButton.Disabled = true;
             }
         }
@@ -26,7 +28,9 @@ namespace FeudalMP.assets.ui.serverconfig
 
         public void OnServerStartPressed()
         {
-            NodeTreeManager.Instance.ServiceLayer.AddChild(new Server());
+            Server server = new Server();
+            NodeTreeManager.Instance.ServiceLayer.AddChild(server);
+            server.Start();
             startServerButton.Disabled = true;
             stopServerButton.Disabled = false;
         }

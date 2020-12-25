@@ -1,9 +1,9 @@
+using FeudalMP.src.foundation;
 using FeudalMP.src.network.server.entity;
+using FeudalMP.src.network.service;
 using FeudalMP.src.util;
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Channels;
 
 namespace FeudalMP.src.network.server
 {
@@ -12,6 +12,7 @@ namespace FeudalMP.src.network.server
         private int port;
         private Logger log;
         private NetworkedMultiplayerENet networkedMultiplayerENet;
+        private NetworkMessageDispatcher networkMessageDispatcher;
 
         private Dictionary<int, GameClient> clients;
         public int Port { get => port; set => port = value; }
@@ -35,10 +36,21 @@ namespace FeudalMP.src.network.server
 
             networkedMultiplayerENet.Connect("peer_connected", this, "OnPeerConnected");
             networkedMultiplayerENet.Connect("peer_disconnected", this, "OnPeerDisconnected");
+
+            networkMessageDispatcher = new NetworkMessageDispatcher();
+            NodeTreeManager.Instance.ServiceLayer.AddChild(networkMessageDispatcher);
+            //networkMessageDispatcher.RegisterNetworkMessage(new Connect());
+
+            GetTree().Multiplayer.Connect("network_peer_packet", this, "OnNetworkPeerPacket");
         }
         public void Stop()
         {
             networkedMultiplayerENet.CloseConnection();
+            networkedMultiplayerENet.Disconnect("peer_connected", this, "OnPeerConnected");
+            networkedMultiplayerENet.Disconnect("peer_disconnected", this, "OnPeerDisconnected");
+            GetTree().Multiplayer.Disconnect("network_peer_packet", this, "OnNetworkPeerPacket");
+            NodeTreeManager.Instance.ServiceLayer.RemoveChild(networkMessageDispatcher);
+            networkMessageDispatcher.QueueFree();
             GetTree().NetworkPeer = null;
             QueueFree();
             log.Info("Server stopped");
@@ -58,6 +70,11 @@ namespace FeudalMP.src.network.server
         {
             log.Info("Peer disconnected id=" + id);
             clients.Remove(id);
+        }
+
+        public void OnNetworkPeerPacket(int senderPeer, byte[] message)
+        {
+            networkMessageDispatcher.Process(senderPeer, message);
         }
     }
 }

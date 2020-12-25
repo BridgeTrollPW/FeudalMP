@@ -33,10 +33,11 @@ margin_right = 85.0
 margin_bottom = 88.0
 text = "Start Server"
 
-[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="StartClient" type="Button" parent="HBoxContainer/VBoxContainer"]
 margin_top = 92.0
 margin_right = 85.0
 margin_bottom = 112.0
+text = "Start Client"
 
 [node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer"]
 margin_top = 116.0
@@ -48,3 +49,4 @@ margin_top = 140.0
 margin_right = 85.0
 margin_bottom = 160.0
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/StartServer" to="." method="OnStartServerPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/StartClient" to="." method="OnStartClientPressed"]

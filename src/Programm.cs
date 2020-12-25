@@ -31,6 +31,9 @@ namespace FeudalMP.src
             else
             {
                 log.Info("Starting client application");
+                FadeTransition fadeTransition = AssetManager.Load<FadeTransition>(AssetManager.PATH_UI + "/transitions/FadeTransition.tscn");
+                NodeTreeManager.Instance.GUILayer.AddChild(fadeTransition);
+                fadeTransition.FadeIn();
                 NodeTreeManager.Instance.HUDLayer.AddChild(AssetManager.Load<DebugOverlay>(AssetManager.PATH_UI + "/debugoverlay/DebugOverlay.tscn"));
                 NodeTreeManager.Instance.GUILayer.AddChild(AssetManager.Load<MainMenu>(AssetManager.PATH_UI + "/mainmenu/MainMenu.tscn"));
             }

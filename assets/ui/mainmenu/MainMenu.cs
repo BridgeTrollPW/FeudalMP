@@ -20,5 +20,10 @@ namespace FeudalMP.assets.ui.mainmenu
         {
             NodeTreeManager.Instance.GUILayer.ChangeScene<ServerConfig>("res://assets/ui/serverconfig/ServerConfig.tscn");
         }
+
+        public void OnStartClientPressed()
+        {
+            NodeTreeManager.Instance.GUILayer.ChangeScene<ClientConfig>("res://assets/ui/clientconfig/ClientConfig.tscn");
+        }
     }
 }
