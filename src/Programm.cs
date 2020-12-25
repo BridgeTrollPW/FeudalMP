@@ -14,6 +14,7 @@ namespace FeudalMP.src
         {
             Logger log = new Logger(nameof(Programm));
             log.Info("Waiting for rootnode to complete setup");
+            log.Info(OS.GetUserDataDir());
             await ToSignal(GetTree().Root, "ready");
             GetTree().Root.AddChild(NodeTreeManager.Instance);
 

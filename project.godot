@@ -21,6 +21,9 @@ server/port=9913
 
 config/name="FeudalMP"
 run/main_scene="res://src/Programm.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="FeudalMP"
+config/project_settings_override="override.cfg"
 config/icon="res://icon.png"
 
 [input]

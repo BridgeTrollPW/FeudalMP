@@ -1,5 +1,0 @@
-[gd_scene format=2]
-
-[node name="DummyChar" type="Spatial"]
-
-[node name="Spatial" type="Spatial" parent="."]
