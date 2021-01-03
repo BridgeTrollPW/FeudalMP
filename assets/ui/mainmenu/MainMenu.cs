@@ -25,5 +25,16 @@ namespace FeudalMP.assets.ui.mainmenu
         {
             NodeTreeManager.Instance.GUILayer.ChangeScene<ClientConfig>("res://assets/ui/clientconfig/ClientConfig.tscn");
         }
+
+        public void OnDevScenePressed()
+        {
+            NodeTreeManager.Instance.GUILayer.Clear();
+            NodeTreeManager.Instance.HUDLayer.AddChild(AssetManager.Load<InGameHUD>(AssetManager.PATH_UI + "/ingamehud/InGameHUD.tscn"));
+            NodeTreeManager.Instance.SceneLayer.ChangeScene<Node>("res://assets/maps/dev01/dev01.tscn");
+        }
+        public void OnExitPressed()
+        {
+            GetTree().Quit();
+        }
     }
 }

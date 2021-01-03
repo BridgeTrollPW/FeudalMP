@@ -14,16 +14,20 @@ namespace FeudalMP.src
         {
             Logger log = new Logger(nameof(Programm));
             log.Info("Waiting for rootnode to complete setup");
-            log.Info(OS.GetUserDataDir());
             await ToSignal(GetTree().Root, "ready");
             GetTree().Root.AddChild(NodeTreeManager.Instance);
+
+            if (StartRoutine.Check() != Error.Ok)
+            {
+                GetTree().Quit();
+            }
 
             if (OS.GetCmdlineArgs().Contains("--server"))
             {
 
                 Server server = new Server
                 {
-                    Port = (int)ProjectSettings.GetSetting("FeudalMP/server/port")
+                    Port = (int)ProjectSettings.GetSetting(CFG.Server.PORT)
                 };
                 NodeTreeManager.Instance.ServiceLayer.AddChild(server);
                 server.Start();
@@ -39,5 +43,8 @@ namespace FeudalMP.src
                 NodeTreeManager.Instance.GUILayer.AddChild(AssetManager.Load<MainMenu>(AssetManager.PATH_UI + "/mainmenu/MainMenu.tscn"));
             }
         }
+
+        public void ConfigFirstRun() { }
+        public void ConfigEveryRun() { }
     }
 }

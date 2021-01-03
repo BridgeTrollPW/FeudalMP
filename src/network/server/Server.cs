@@ -16,6 +16,8 @@ namespace FeudalMP.src.network.server
 
         private Dictionary<int, GameClient> clients;
         public int Port { get => port; set => port = value; }
+        public Dictionary<int, GameClient> Clients { get => clients; set => clients = value; }
+        public NetworkMessageDispatcher NetworkMessageDispatcher { get => networkMessageDispatcher; set => networkMessageDispatcher = value; }
 
         public override void _Ready()
         {
@@ -39,7 +41,8 @@ namespace FeudalMP.src.network.server
 
             networkMessageDispatcher = new NetworkMessageDispatcher();
             NodeTreeManager.Instance.ServiceLayer.AddChild(networkMessageDispatcher);
-            //networkMessageDispatcher.RegisterNetworkMessage(new Connect());
+
+            InternalRegisterNetworkMessages();
 
             GetTree().Multiplayer.Connect("network_peer_packet", this, "OnNetworkPeerPacket");
         }
@@ -75,6 +78,17 @@ namespace FeudalMP.src.network.server
         public void OnNetworkPeerPacket(int senderPeer, byte[] message)
         {
             networkMessageDispatcher.Process(senderPeer, message);
+        }
+
+        public void DisconnectClient(int peerId)
+        {
+            networkedMultiplayerENet.DisconnectPeer(peerId);
+        }
+
+        private void InternalRegisterNetworkMessages()
+        {
+            networkMessageDispatcher.RegisterNetworkMessage(new Connect());
+            networkMessageDispatcher.RegisterNetworkMessage(new ErrorMessage());
         }
     }
 }

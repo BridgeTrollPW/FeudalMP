@@ -1,35 +1,60 @@
-using System;
+using FeudalMP.src.foundation;
 using FeudalMP.src.network.entity;
+using FeudalMP.src.network.server;
 using FeudalMP.src.network.service;
 using FeudalMP.src.util;
 
-[System.Serializable]
-public class Connect : INetworkMessage
+namespace FeudalMP.src.network.messages
 {
-    public INetworkMessage Deserialize(byte[] byteArray)
+    [System.Serializable]
+    public class Connect : INetworkMessage
     {
-        return NetworkMessageSerializer.Deserialize<Connect>(byteArray);
-    }
+        public string name;
+        public bool success;
+        public INetworkMessage Deserialize(byte[] byteArray)
+        {
+            return byteArray.Deserialize<Connect>();
+        }
 
-    public void ExecuteClient()
-    {
-        Logger logger = new Logger(nameof(Connect));
-        logger.Info("ExecuteClient() called");
-    }
+        public void ExecuteClient(int senderPeer)
+        {
+            Logger logger = new Logger(nameof(Connect));
+            logger.Info("ExecuteClient() called");
+            if (!success)
+            {
+                logger.Error("Server did not want to connect :'(");
+            }
 
-    public void ExecuteServer()
-    {
-        Logger logger = new Logger(nameof(Connect));
-        logger.Info("ExecuteServer() called");
-    }
+        }
 
-    public NetworkMessageIdentifier GetNetworkMessageIdentifier()
-    {
-        return NetworkMessageIdentifier.CONNECT;
-    }
+        public void ExecuteServer(int senderPeer)
+        {
+            Logger logger = new Logger(nameof(Connect));
+            logger.Info("ExecuteServer() called, Connect received with name=" + name);
+            Server server = NodeTreeManager.Instance.ServiceLayer.GetNode<Server>("./Server");
+            if (!server.Clients.ContainsKey(senderPeer))
+            {
+                server.NetworkMessageDispatcher.Dispatch(new ErrorMessage()
+                {
+                    Message = "The peer id is not present in already connected peers, disconnected",
+                    Reason = "peer not properly connected"
+                }, senderPeer);
+            }
+            server.Clients[senderPeer].Name = name;
+            server.NetworkMessageDispatcher.Dispatch(new Connect
+            {
+                success = true
+            }, senderPeer);
+        }
 
-    public byte[] Serialize()
-    {
-        return NetworkMessageSerializer.Serialize(this);
+        public NetworkMessageIdentifier GetNetworkMessageIdentifier()
+        {
+            return NetworkMessageIdentifier.CONNECT;
+        }
+
+        public byte[] Serialize()
+        {
+            return NetworkMessageSerializer.Serialize(this);
+        }
     }
 }

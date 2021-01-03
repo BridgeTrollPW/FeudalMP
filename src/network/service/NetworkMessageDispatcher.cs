@@ -17,7 +17,7 @@ namespace FeudalMP.src.network.service
         {
             Name = "NetworkMessageDispatcher";
         }
-        public Error Dispatch(INetworkMessage networkMessage, int peerId, NetworkedMultiplayerPeer.TransferModeEnum mode)
+        public Error Dispatch(INetworkMessage networkMessage, int peerId, NetworkedMultiplayerPeer.TransferModeEnum mode = NetworkedMultiplayerPeer.TransferModeEnum.Reliable)
         {
             //short range should be enough, over 32k possible different message types
             byte[] identifierBytes = BitConverter.GetBytes((short)networkMessage.GetNetworkMessageIdentifier());
@@ -56,11 +56,11 @@ namespace FeudalMP.src.network.service
             {
                 if (GetTree().Multiplayer.IsNetworkServer())
                 {
-                    genericMessage.ExecuteServer();
+                    genericMessage.ExecuteServer(senderPeer);
                 }
                 else
                 {
-                    genericMessage.ExecuteClient();
+                    genericMessage.ExecuteClient(senderPeer);
                 }
             }
             catch (Exception e)

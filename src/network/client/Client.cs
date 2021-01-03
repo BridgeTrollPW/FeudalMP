@@ -31,7 +31,8 @@ namespace FeudalMP.src.network.client
 
             networkMessageDispatcher = new NetworkMessageDispatcher();
             NodeTreeManager.Instance.ServiceLayer.AddChild(networkMessageDispatcher);
-            networkMessageDispatcher.RegisterNetworkMessage(new Connect());
+
+            InternalRegisterNetworkMessages();
 
             GetTree().Multiplayer.Connect("network_peer_packet", this, "OnNetworkPeerPacket");
         }
@@ -65,6 +66,11 @@ namespace FeudalMP.src.network.client
         public void OnNetworkPeerPacket(int id, byte[] packet)
         {
             networkMessageDispatcher.Process(id, packet);
+        }
+
+        private void InternalRegisterNetworkMessages()
+        {
+            networkMessageDispatcher.RegisterNetworkMessage(new ErrorMessage());
         }
     }
 }

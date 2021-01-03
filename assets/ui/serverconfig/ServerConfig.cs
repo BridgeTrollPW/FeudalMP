@@ -7,14 +7,17 @@ namespace FeudalMP.assets.ui.serverconfig
 {
     public class ServerConfig : Control
     {
-        Button startServerButton;
-        Button stopServerButton;
+        private Button startServerButton;
+        private Button stopServerButton;
+
+        private MenuButton mapSelectionMenuButton;
 
         public override void _Ready()
         {
 
-            startServerButton = GetNode<Button>("VBoxContainer/HBoxContainer2/StartServerButton");
-            stopServerButton = GetNode<Button>("VBoxContainer/HBoxContainer4/StopServerButton");
+            startServerButton = GetNode<Button>("HSplitContainer/VBoxContainer/HBoxContainer2/StartServerButton");
+            stopServerButton = GetNode<Button>("HSplitContainer/VBoxContainer/HBoxContainer4/StopServerButton");
+
             if (NodeTreeManager.Instance.ServiceLayer.HasNode("./Server"))
             {
                 startServerButton.Disabled = true;
@@ -23,6 +26,22 @@ namespace FeudalMP.assets.ui.serverconfig
             {
                 stopServerButton.Disabled = true;
             }
+            mapSelectionMenuButton = GetNode<MenuButton>("HSplitContainer/VBoxContainer/MapSelectionHBoxContainer/MapSelectionMenuButton");
+            Directory directory = new Directory();
+            if (directory.Open("user://maps") == Error.Ok)
+            {
+                directory.ListDirBegin();
+                string tempMapName = directory.GetNext();
+                while (tempMapName != "")
+                {
+                    if (directory.CurrentIsDir())
+                    {
+                        mapSelectionMenuButton.GetPopup().AddItem(tempMapName);
+                    }
+                    tempMapName = directory.GetNext();
+                }
+            }
+
         }
 
 

@@ -1,28 +1,36 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/character/Character.cs" type="Script" id=1]
+[ext_resource path="res://assets/character/CameraOrbit.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleMesh" id=1]
+radius = 0.5
+
+[sub_resource type="PrismMesh" id=3]
 
 [sub_resource type="CapsuleShape" id=2]
+radius = 0.5
 
-[node name="Character" type="Spatial"]
+[node name="Character" type="KinematicBody"]
 script = ExtResource( 1 )
 
-[node name="RigidBody" type="RigidBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.40213, 0 )
-
-[node name="MeshInstance" type="MeshInstance" parent="RigidBody"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+[node name="MeshInstance" type="MeshInstance" parent="MeshInstance"]
+transform = Transform( 0.18, 0, 0, 0, 0.3, -3.25841e-08, 0, -3.25841e-08, 0.1, 0, 1, -1.19209e-07 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1, 0 )
 shape = SubResource( 2 )
 
-[node name="CameraViewAnchor" type="Spatial" parent="RigidBody"]
-transform = Transform( 1, 0, 0, 0, 0.961454, 0.274966, 0, -0.274966, 0.961454, 0, 1.26473, 0 )
+[node name="CameraOrbit" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+script = ExtResource( 2 )
 
-[node name="ClippedCamera" type="ClippedCamera" parent="RigidBody/CameraViewAnchor"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.16877, 10.3033 )
+[node name="Camera" type="Camera" parent="CameraOrbit"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, -1, 1, -5 )
