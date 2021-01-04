@@ -10,6 +10,7 @@ namespace FeudalMP.src.network.service
 {
     public class NetworkMessageDispatcher : Node
     {
+        private long messagecounter = 0;
         private readonly Dictionary<NetworkMessageIdentifier, INetworkMessage> MessageRegister = new Dictionary<NetworkMessageIdentifier, INetworkMessage>();
         private readonly Logger logger = new Logger(nameof(NetworkMessageDispatcher));
 
@@ -37,7 +38,7 @@ namespace FeudalMP.src.network.service
             short enumId = BitConverter.ToInt16(identifierBytes, 0);
             if (!Enum.IsDefined(typeof(NetworkMessageIdentifier), enumId))
             {
-                logger.Warn(string.Format("NetworkMessageIdentifier {0} does not exist", enumId));
+                logger.Warn(string.Format("NetworkMessageIdentifier {0} does not exist, mc={1}", enumId, messagecounter));
                 return;
             }
             NetworkMessageIdentifier networkMessageIdentifier = (NetworkMessageIdentifier)enumId;
@@ -46,12 +47,12 @@ namespace FeudalMP.src.network.service
             System.Array.Copy(networkMessageBytes, 2, networkMessageBytes, 0, networkMessageBytes.Length - 2);
             if (!MessageRegister.ContainsKey(networkMessageIdentifier))
             {
-                logger.Warn(string.Format("Received unregistered NetworkMessageIdentifier = {0}", networkMessageIdentifier));
+                logger.Warn(string.Format("Received unregistered NetworkMessageIdentifier = {0}, mc={1}", networkMessageIdentifier, messagecounter));
                 return;
             }
             INetworkMessage genericMessage = MessageRegister[networkMessageIdentifier].Deserialize(networkMessageBytes);
 
-            logger.Info(string.Format("Received Message with {0} bytes. Relates to NetworkMessageIdentifier short={1} enum={2}", networkMessageBytes.Length, enumId, networkMessageIdentifier.ToString()));
+            logger.Info(string.Format("Received Message with {0} bytes. Relates to NetworkMessageIdentifier short={1} enum={2}, mc={3}", networkMessageBytes.Length, enumId, networkMessageIdentifier.ToString(), messagecounter));
             try
             {
                 if (GetTree().Multiplayer.IsNetworkServer())
@@ -65,8 +66,9 @@ namespace FeudalMP.src.network.service
             }
             catch (Exception e)
             {
-                logger.Error(string.Format("Error executing received Message {0}", e));
+                logger.Error(string.Format("mc={1}, Error executing received Message {0}", e, messagecounter));
             }
+            messagecounter++;
         }
 
         public void RegisterNetworkMessage(INetworkMessage networkMessage)

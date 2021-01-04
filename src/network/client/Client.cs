@@ -1,4 +1,6 @@
+using FeudalMP.assets.ui.mainmenu;
 using FeudalMP.src.foundation;
+using FeudalMP.src.network.messages;
 using FeudalMP.src.network.service;
 using FeudalMP.src.util;
 using Godot;
@@ -10,6 +12,9 @@ namespace FeudalMP.src.network.client
         private Logger log;
         private NetworkedMultiplayerENet networkedMultiplayerENet;
         private NetworkMessageDispatcher networkMessageDispatcher;
+
+        public NetworkMessageDispatcher NetworkMessageDispatcher { get => networkMessageDispatcher; set => networkMessageDispatcher = value; }
+
         public override void _Ready()
         {
             Name = "Client";
@@ -48,6 +53,9 @@ namespace FeudalMP.src.network.client
             networkMessageDispatcher.QueueFree();
             GetTree().NetworkPeer = null;
             QueueFree();
+            NodeTreeManager.Instance.ServiceLayer.Clear();
+            NodeTreeManager.Instance.SceneLayer.Clear();
+            NodeTreeManager.Instance.GUILayer.ChangeScene<MainMenu>("res://assets/ui/mainmenu/MainMenu.tscn");
         }
 
         public void OnConnectionFailure()
@@ -61,6 +69,7 @@ namespace FeudalMP.src.network.client
         public void OnServerDisconnected()
         {
             log.Warn("Server disconnected this client");
+            Terminate();
         }
 
         public void OnNetworkPeerPacket(int id, byte[] packet)
@@ -70,7 +79,12 @@ namespace FeudalMP.src.network.client
 
         private void InternalRegisterNetworkMessages()
         {
+            networkMessageDispatcher.RegisterNetworkMessage(new ConnectClient());
             networkMessageDispatcher.RegisterNetworkMessage(new ErrorMessage());
+            networkMessageDispatcher.RegisterNetworkMessage(new InitialSync());
+            networkMessageDispatcher.RegisterNetworkMessage(new Sync());
+            networkMessageDispatcher.RegisterNetworkMessage(new PosRotUpdate());
+            networkMessageDispatcher.RegisterNetworkMessage(new Disconnect());
         }
     }
 }

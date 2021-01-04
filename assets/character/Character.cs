@@ -1,3 +1,6 @@
+using FeudalMP.src.foundation;
+using FeudalMP.src.network.client;
+using FeudalMP.src.network.messages;
 using Godot;
 
 public class Character : KinematicBody
@@ -21,6 +24,7 @@ public class Character : KinematicBody
     //  }
     public override void _PhysicsProcess(float delta)
     {
+        bool movement = false;
         float currentSpeed = moveSpeed;
         velocity.x = 0;
         velocity.z = 0;
@@ -29,22 +33,27 @@ public class Character : KinematicBody
         if (Input.IsActionPressed("move_forward"))
         {
             input.z += 1;
+            movement = true;
         }
         if (Input.IsActionPressed("move_backward"))
         {
             input.z -= 1;
+            movement = true;
         }
         if (Input.IsActionPressed("move_left"))
         {
             input.x += 1;
+            movement = true;
         }
         if (Input.IsActionPressed("move_right"))
         {
             input.x -= 1;
+            movement = true;
         }
         if (Input.IsActionPressed("move_sprint"))
         {
             currentSpeed = sprintSpeed;
+            movement = true;
         }
 
         input = input.Normalized();
@@ -59,7 +68,36 @@ public class Character : KinematicBody
         if (Input.IsActionPressed("move_jump") && IsOnFloor())
         {
             velocity.y = jumpForce;
+            movement = true;
         }
+        if (!IsOnFloor())
+        {
+            movement = true;
+        }
+
         velocity = MoveAndSlide(velocity, Vector3.Up);
+        if (movement)
+        {
+            SendNetworkUpdate();
+        }
+    }
+
+    public void OnCameraOrbitRotationUpdate()
+    {
+        SendNetworkUpdate();
+    }
+
+    private void SendNetworkUpdate()
+    {
+        if (GetTree().NetworkPeer != null)
+        {
+            Client client = NodeTreeManager.Instance.ServiceLayer.GetNode<Client>("./Client");
+            client.NetworkMessageDispatcher.Dispatch(new PosRotUpdate()
+            {
+                PeerId = GetTree().GetNetworkUniqueId(),
+                Translation = this.Translation,
+                RotationDegrees = this.RotationDegrees
+            }, NetworkedMultiplayerPeer.TargetPeerServer, NetworkedMultiplayerPeer.TransferModeEnum.Unreliable);
+        }
     }
 }

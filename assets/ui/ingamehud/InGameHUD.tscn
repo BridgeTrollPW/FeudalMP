@@ -28,15 +28,22 @@ rect_min_size = Vector2( 300, 0 )
 alignment = 1
 
 [node name="Resume" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
-margin_top = 278.0
+margin_top = 266.0
 margin_right = 300.0
-margin_bottom = 298.0
+margin_bottom = 286.0
 text = "Resume"
 
-[node name="MainMenu" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
-margin_top = 302.0
+[node name="PlayerList" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
+margin_top = 290.0
 margin_right = 300.0
-margin_bottom = 322.0
+margin_bottom = 310.0
+text = "PlayerList"
+
+[node name="MainMenu" type="Button" parent="Control/HBoxContainer/VBoxContainer"]
+margin_top = 314.0
+margin_right = 300.0
+margin_bottom = 334.0
 text = "MainMenu"
 [connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/Resume" to="." method="OnResumePressed"]
+[connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/PlayerList" to="." method="OnPlayerListPressed"]
 [connection signal="pressed" from="Control/HBoxContainer/VBoxContainer/MainMenu" to="." method="OnMainMenuPressed"]

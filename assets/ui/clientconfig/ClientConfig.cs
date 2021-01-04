@@ -36,7 +36,7 @@ public class ClientConfig : Control
     }
     public void OnMessageConnectPressed()
     {
-        Connect connect = new Connect
+        ConnectClient connect = new ConnectClient
         {
             name = "Hello i am a client" + GetTree().GetNetworkUniqueId()
         };

@@ -4,6 +4,8 @@ using Godot.Collections;
 
 public class CameraOrbit : Spatial
 {
+    [Signal]
+    public delegate void RotationUpdate();
     private float lookSensitivity = 15f;
     private float minLookAngle = -20f;
     private float maxLookAngle = 75f;
@@ -20,6 +22,7 @@ public class CameraOrbit : Spatial
         if (@event is InputEventMouseMotion inputEventMouseMotion)
         {
             mouseDelta = inputEventMouseMotion.Relative;
+            EmitSignal(nameof(RotationUpdate));
         }
     }
 

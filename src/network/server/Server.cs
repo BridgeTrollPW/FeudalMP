@@ -1,9 +1,11 @@
 using FeudalMP.src.foundation;
+using FeudalMP.src.network.messages;
 using FeudalMP.src.network.server.entity;
 using FeudalMP.src.network.service;
 using FeudalMP.src.util;
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FeudalMP.src.network.server
 {
@@ -18,6 +20,9 @@ namespace FeudalMP.src.network.server
         public int Port { get => port; set => port = value; }
         public Dictionary<int, GameClient> Clients { get => clients; set => clients = value; }
         public NetworkMessageDispatcher NetworkMessageDispatcher { get => networkMessageDispatcher; set => networkMessageDispatcher = value; }
+        public string Map { get => map; set => map = value; }
+
+        private string map;
 
         public override void _Ready()
         {
@@ -25,6 +30,7 @@ namespace FeudalMP.src.network.server
             port = (int)ProjectSettings.GetSetting("FeudalMP/server/port");
             log = new Logger(nameof(Server));
             clients = new Dictionary<int, GameClient>();
+            Map = "dev01";
         }
 
         public void Start()
@@ -69,10 +75,14 @@ namespace FeudalMP.src.network.server
                 Id = id
             });
         }
-        public void OnPeerDisconnected(int id)
+        public void OnPeerDisconnected(int peerId)
         {
-            log.Info("Peer disconnected id=" + id);
-            clients.Remove(id);
+            NetworkMessageDispatcher.Dispatch(new Disconnect()
+            {
+                DisconnectedPeer = peerId
+            }, -NetworkedMultiplayerPeer.TargetPeerServer);
+            log.Info("Peer disconnected id=" + peerId);
+            clients.Remove(peerId);
         }
 
         public void OnNetworkPeerPacket(int senderPeer, byte[] message)
@@ -82,13 +92,26 @@ namespace FeudalMP.src.network.server
 
         public void DisconnectClient(int peerId)
         {
+            NetworkMessageDispatcher.Dispatch(new Disconnect()
+            {
+                DisconnectedPeer = peerId
+            }, NetworkedMultiplayerPeer.TargetPeerBroadcast);
             networkedMultiplayerENet.DisconnectPeer(peerId);
         }
 
         private void InternalRegisterNetworkMessages()
         {
-            networkMessageDispatcher.RegisterNetworkMessage(new Connect());
+            networkMessageDispatcher.RegisterNetworkMessage(new ConnectClient());
             networkMessageDispatcher.RegisterNetworkMessage(new ErrorMessage());
+            networkMessageDispatcher.RegisterNetworkMessage(new InitialSync());
+            networkMessageDispatcher.RegisterNetworkMessage(new Sync());
+            networkMessageDispatcher.RegisterNetworkMessage(new PosRotUpdate());
+            networkMessageDispatcher.RegisterNetworkMessage(new Disconnect());
+        }
+
+        public List<int> GetActiveClientIds()
+        {
+            return Clients.Where(entry => GameClientState.ACTIVE.Equals(entry.Value.State)).Select(entry => entry.Key).ToList();
         }
     }
 }

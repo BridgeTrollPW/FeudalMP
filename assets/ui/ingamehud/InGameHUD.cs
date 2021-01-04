@@ -1,4 +1,5 @@
 using FeudalMP.src.foundation;
+using FeudalMP.src.network.client;
 using Godot;
 
 public class InGameHUD : Node
@@ -29,15 +30,29 @@ public class InGameHUD : Node
 
     public void OnMainMenuPressed()
     {
-        NodeTreeManager.Instance.SceneLayer.Clear();
-        NodeTreeManager.Instance.HUDLayer.RemoveChild(this);
-        this.QueueFree();
-        NodeTreeManager.Instance.GUILayer.ChangeScene<Node>("res://assets/ui/mainmenu/MainMenu.tscn");
+        if (GetTree().NetworkPeer != null)
+        {
+            NodeTreeManager.Instance.HUDLayer.RemoveChild(this);
+            Client client = NodeTreeManager.Instance.ServiceLayer.GetNode<Client>("./Client");
+            client.Terminate();
+        }
+        else
+        {
+            NodeTreeManager.Instance.HUDLayer.RemoveChild(this);
+            NodeTreeManager.Instance.SceneLayer.Clear();
+            this.QueueFree();
+            NodeTreeManager.Instance.GUILayer.ChangeScene<Node>("res://assets/ui/mainmenu/MainMenu.tscn");
+        }
     }
 
     public void OnResumePressed()
     {
         Input.SetMouseMode(Input.MouseMode.Captured);
         control.Visible = false;
+    }
+
+    public void OnPlayerListPressed()
+    {
+
     }
 }

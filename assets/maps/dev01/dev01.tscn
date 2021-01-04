@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/materials/grid_dark.material" type="Material" id=1]
-[ext_resource path="res://assets/character/Character.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GIProbeData" id=1]
 bounds = AABB( -55, -24, -52, 110, 48, 104 )
@@ -17,9 +16,6 @@ propagation = 0.7
 extents = Vector3( 50, 1, 50 )
 
 [node name="dev01" type="Spatial"]
-
-[node name="Character" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 3, 9 )
 
 [node name="GIProbe" type="GIProbe" parent="."]
 extents = Vector3( 55, 24, 52 )
