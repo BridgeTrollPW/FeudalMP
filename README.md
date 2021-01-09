@@ -1,7 +1,7 @@
 # FeudalMP
 
 ## Exporting the Game
-
+Via github action
 
 ## Server
 ### Starting the Server
