@@ -49,7 +49,8 @@ namespace FeudalMP.src.network.messages
         public void ExecuteServer(int senderPeer)
         {
             Server server = NodeTreeManager.Instance.ServiceLayer.GetNode<Server>("./Server");
-
+            server.Clients[senderPeer].Translation = translation;
+            server.Clients[senderPeer].Rotation = rotationDegrees;
             server.NetworkMessageDispatcher.Dispatch(new PosRotUpdate()
             {
                 PeerId = senderPeer,

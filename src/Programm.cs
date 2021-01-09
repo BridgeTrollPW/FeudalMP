@@ -24,10 +24,11 @@ namespace FeudalMP.src
 
             if (OS.GetCmdlineArgs().Contains("--server"))
             {
-
+                ConfigFile cf = new ConfigFile();
+                Error cf_error = cf.Load("user://settings.cfg");
                 Server server = new Server
                 {
-                    Port = (int)ProjectSettings.GetSetting(CFG.Server.PORT)
+                    Port = (int)cf.GetValue(CFG.Server.SECTION, CFG.Server.PORT)
                 };
                 NodeTreeManager.Instance.ServiceLayer.AddChild(server);
                 server.Start();

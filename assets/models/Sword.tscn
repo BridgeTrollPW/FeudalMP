@@ -1,0 +1,17 @@
+[gd_scene format=2]
+
+[node name="Sword" type="Spatial"]
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 1.41, 0.47 )
+height = 12.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 1.23, 0.47 )
+width = 6.0
+
+[node name="CSGPolygon" type="CSGPolygon" parent="CSGCombiner"]
+transform = Transform( 0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.12, 0, 1.77, 0.53 )
+polygon = PoolVector2Array( -1, 0, 0, 3, 0, 3, 1, 0 )

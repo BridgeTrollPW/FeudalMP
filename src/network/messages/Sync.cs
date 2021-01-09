@@ -12,9 +12,9 @@ namespace FeudalMP.src.network.messages
     [System.Serializable]
     public class Sync : INetworkMessage
     {
-        private List<int> clientUids = new List<int>();
+        private List<GameClient> connectedClients = new List<GameClient>();
 
-        public List<int> ClientUids { get => clientUids; set => clientUids = value; }
+        public List<GameClient> ClientUids { get => connectedClients; set => connectedClients = value; }
 
         public INetworkMessage Deserialize(byte[] byteArray)
         {
@@ -23,15 +23,20 @@ namespace FeudalMP.src.network.messages
 
         public void ExecuteClient(int senderPeer)
         {
-            foreach (int peerId in ClientUids)
+            foreach (GameClient peer in ClientUids)
             {
-                if (peerId == NodeTreeManager.Instance.SceneLayer.GetTree().GetNetworkUniqueId())
+                if (peer.Id == NodeTreeManager.Instance.SceneLayer.GetTree().GetNetworkUniqueId())
                 {
                     continue;
                 }
                 Spatial CharacterRepresentation = AssetManager.Load<Spatial>(AssetManager.PATH_BASE + "/character/CharacterRepresentation.tscn");
                 NodeTreeManager.Instance.SceneLayer.AddChild(CharacterRepresentation);
-                CharacterRepresentation.Name = string.Format("{0}", peerId);
+                CharacterRepresentation.Name = string.Format("{0}", peer.Id);
+                Label billboard = CharacterRepresentation.GetNode<Label>("Billboard/Viewport/Label");
+                billboard.Text = peer.Name + "\n" + peer.Id;
+                CharacterRepresentation.Translation = peer.Translation;
+                CharacterRepresentation.RotationDegrees = peer.Rotation;
+
             }
         }
 
@@ -42,13 +47,13 @@ namespace FeudalMP.src.network.messages
             //get list of all connected clients and send to client requesting
             server.NetworkMessageDispatcher.Dispatch(new Sync()
             {
-                ClientUids = new List<int>(server.GetActiveClientIds())
+                ClientUids = new List<GameClient>(server.Clients.Values)
             }, senderPeer);
 
             //Send Sync message to all connected clients with only this single client
             server.NetworkMessageDispatcher.Dispatch(new Sync()
             {
-                ClientUids = new List<int>() { senderPeer }
+                ClientUids = new List<GameClient>() { server.Clients[senderPeer] }
             }, NetworkedMultiplayerPeer.TargetPeerBroadcast);
             server.Clients[senderPeer].State = GameClientState.ACTIVE;
         }

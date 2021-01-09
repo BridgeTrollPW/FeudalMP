@@ -1,18 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[sub_resource type="CapsuleMesh" id=3]
+[ext_resource path="res://assets/predef/Billboard.tscn" type="PackedScene" id=1]
+
+[sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
 
 [sub_resource type="PrismMesh" id=2]
 
-[sub_resource type="CapsuleShape" id=4]
+[sub_resource type="CapsuleShape" id=3]
 radius = 0.5
 
 [node name="KinematicBody" type="KinematicBody"]
 
 [node name="CharacterRepresentation" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 1 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="CharacterRepresentation"]
@@ -22,4 +24,7 @@ material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1, 0 )
-shape = SubResource( 4 )
+shape = SubResource( 3 )
+
+[node name="Billboard" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1.03151, 0, 0, 0, 1.15934, 0, 0, 0, 1.15934, 0, 2, 0 )

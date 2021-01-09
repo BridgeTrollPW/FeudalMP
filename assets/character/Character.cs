@@ -13,6 +13,7 @@ public class Character : KinematicBody
     private Camera camera;
     public override void _Ready()
     {
+        Name = nameof(Character);
         velocity = new Vector3();
         camera = GetNode<Camera>("CameraOrbit/Camera");
     }

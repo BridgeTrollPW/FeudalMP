@@ -31,6 +31,10 @@ namespace FeudalMP.assets.ui.mainmenu
             NodeTreeManager.Instance.GUILayer.Clear();
             NodeTreeManager.Instance.HUDLayer.AddChild(AssetManager.Load<InGameHUD>(AssetManager.PATH_UI + "/ingamehud/InGameHUD.tscn"));
             NodeTreeManager.Instance.SceneLayer.ChangeScene<Node>("res://assets/maps/dev01/dev01.tscn");
+            Spatial Character = AssetManager.Load<Spatial>(AssetManager.PATH_BASE + "/character/Character.tscn");
+            Character.Translation = new Vector3(0, 2, 0);
+            NodeTreeManager.Instance.SceneLayer.AddChild(Character);
+            Character.Name = NodeTreeManager.Instance.SceneLayer.GetTree().GetNetworkUniqueId().ToString();
         }
         public void OnExitPressed()
         {

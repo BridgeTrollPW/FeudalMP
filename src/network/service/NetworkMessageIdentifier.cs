@@ -6,8 +6,9 @@ namespace FeudalMP.src.network.service
         INITIAL_SYNC,
         SYNC,
         ERROR_MESSAGE,
-
         POSITION_ROTATION_UPDATE,
-        DISCONNECT
+        DISCONNECT,
+        REQUEST_PLAYER_LIST,
+        SPAWN_OBJECT_MESSAGE
     }
 }

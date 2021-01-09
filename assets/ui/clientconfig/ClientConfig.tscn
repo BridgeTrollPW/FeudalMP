@@ -60,10 +60,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Name" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 48.0
 margin_right = 1024.0
 margin_bottom = 68.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Name"]
+margin_top = 3.0
+margin_right = 38.0
+margin_bottom = 17.0
+text = "Name"
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer/Name"]
+margin_left = 42.0
+margin_right = 142.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 100, 20 )
+text = "Leyben"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 1024.0
+margin_bottom = 92.0
 
 [node name="Connect" type="Button" parent="VBoxContainer/HBoxContainer"]
 margin_right = 64.0

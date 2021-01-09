@@ -14,6 +14,7 @@ public class CameraOrbit : Spatial
 
     public override void _Ready()
     {
+        Name = nameof(CameraOrbit);
         player = GetParent<Spatial>();
         Input.SetMouseMode(Input.MouseMode.Captured);
     }

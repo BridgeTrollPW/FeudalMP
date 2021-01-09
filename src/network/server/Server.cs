@@ -80,7 +80,7 @@ namespace FeudalMP.src.network.server
             NetworkMessageDispatcher.Dispatch(new Disconnect()
             {
                 DisconnectedPeer = peerId
-            }, -NetworkedMultiplayerPeer.TargetPeerServer);
+            }, NetworkedMultiplayerPeer.TargetPeerBroadcast);
             log.Info("Peer disconnected id=" + peerId);
             clients.Remove(peerId);
         }
@@ -107,6 +107,7 @@ namespace FeudalMP.src.network.server
             networkMessageDispatcher.RegisterNetworkMessage(new Sync());
             networkMessageDispatcher.RegisterNetworkMessage(new PosRotUpdate());
             networkMessageDispatcher.RegisterNetworkMessage(new Disconnect());
+            networkMessageDispatcher.RegisterNetworkMessage(new RequestPlayerList());
         }
 
         public List<int> GetActiveClientIds()

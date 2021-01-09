@@ -32,6 +32,10 @@ namespace FeudalMP.src.network.messages
 
         public void ExecuteServer(int senderPeer)
         {
+            //Do not execute if the disconnect was send by the server itself
+            if(senderPeer == NetworkedMultiplayerPeer.TargetPeerServer){
+                return;
+            }
             Server server = NodeTreeManager.Instance.ServiceLayer.GetNode<Server>("./Server");
             server.NetworkMessageDispatcher.Dispatch(new Disconnect()
             {

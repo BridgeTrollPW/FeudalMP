@@ -10,11 +10,13 @@ public class ClientConfig : Control
 {
     private TextEdit addressTextField;
     private TextEdit portTextField;
+    private TextEdit nameTextField;
     private Client client;
     public override void _Ready()
     {
         portTextField = GetNode<TextEdit>("VBoxContainer/Port/TextEdit");
         addressTextField = GetNode<TextEdit>("VBoxContainer/Host/TextEdit");
+        nameTextField = GetNode<TextEdit>("VBoxContainer/Name/TextEdit");
     }
 
     public void OnConnectPressed()
@@ -38,7 +40,7 @@ public class ClientConfig : Control
     {
         ConnectClient connect = new ConnectClient
         {
-            name = "Hello i am a client" + GetTree().GetNetworkUniqueId()
+            name = (nameTextField.Text != null || nameTextField.Text != "") ? nameTextField.Text : "Unknown Leyben"
         };
         NodeTreeManager.Instance.ServiceLayer.GetNode<NetworkMessageDispatcher>("./NetworkMessageDispatcher").Dispatch(connect, 1, NetworkedMultiplayerPeer.TransferModeEnum.Reliable);
     }

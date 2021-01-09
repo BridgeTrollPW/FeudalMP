@@ -1,14 +1,24 @@
+using System;
+using Godot;
+
 namespace FeudalMP.src.network.server.entity
 {
+    [Serializable]
     public class GameClient
     {
         private int id;
         private string name;
+        private Vector3 rotation;
+        private Vector3 translation;
+
+        [NonSerialized]
         private GameClientState state;
 
         public int Id { get => id; set => id = value; }
         public GameClientState State { get => state; set => state = value; }
         public string Name { get => name; set => name = value; }
+        public Vector3 Translation { get => translation; set => translation = value; }
+        public Vector3 Rotation { get => rotation; set => rotation = value; }
 
         public GameClient()
         {

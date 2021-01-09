@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FeudalMP.assets.ui.mainmenu;
 using FeudalMP.src.foundation;
 using FeudalMP.src.network.messages;
@@ -12,8 +13,10 @@ namespace FeudalMP.src.network.client
         private Logger log;
         private NetworkedMultiplayerENet networkedMultiplayerENet;
         private NetworkMessageDispatcher networkMessageDispatcher;
+        private Dictionary<int, string> playerList = new Dictionary<int, string>();
 
         public NetworkMessageDispatcher NetworkMessageDispatcher { get => networkMessageDispatcher; set => networkMessageDispatcher = value; }
+        public Dictionary<int, string> PlayerList { get => playerList; set => playerList = value; }
 
         public override void _Ready()
         {
@@ -85,6 +88,7 @@ namespace FeudalMP.src.network.client
             networkMessageDispatcher.RegisterNetworkMessage(new Sync());
             networkMessageDispatcher.RegisterNetworkMessage(new PosRotUpdate());
             networkMessageDispatcher.RegisterNetworkMessage(new Disconnect());
+            networkMessageDispatcher.RegisterNetworkMessage(new RequestPlayerList());
         }
     }
 }
