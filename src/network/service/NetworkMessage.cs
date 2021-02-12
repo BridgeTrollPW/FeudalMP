@@ -1,3 +1,4 @@
+using System;
 using FeudalMP.src.network.service;
 
 namespace FeudalMP.src.network.entity
@@ -9,5 +10,8 @@ namespace FeudalMP.src.network.entity
         byte[] Serialize();
         INetworkMessage Deserialize(byte[] byteArray);
         NetworkMessageIdentifier GetNetworkMessageIdentifier();
+
+        INetworkMessageData GetData();
+        bool RequiresNodeInitialisation();
     }
 }

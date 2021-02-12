@@ -1,0 +1,11 @@
+CREATE TABLE players (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    gold INTEGER DEFAULT 0 NOT NULL,
+    name TEXT NOT NULL,
+    "position" TEXT NOT NULL,
+    rotation TEXT NOT NULL,
+    faction INTEGER DEFAULT NULL,
+    profession INTEGER DEFAULT NULL
+);
+
+CREATE UNIQUE INDEX players_id_IDX ON players (id);

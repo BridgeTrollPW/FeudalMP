@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Godot.NET.Sdk/3.2.3">
-  <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-    <RootNamespace>FeudalMP</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <RootNamespace>FeudalMP</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="MySql.Data" Version="8.0.22" />
+    </ItemGroup>
 </Project>

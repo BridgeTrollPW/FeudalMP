@@ -46,5 +46,10 @@ namespace FeudalMP.src.network.messages
         {
             return NetworkMessageSerializer.Serialize(this);
         }
+
+                bool INetworkMessage.RequiresNodeInitialisation()
+        {
+            return false;
+        }
     }
 }

@@ -51,6 +51,7 @@ namespace FeudalMP.src.network.server
             InternalRegisterNetworkMessages();
 
             GetTree().Multiplayer.Connect("network_peer_packet", this, "OnNetworkPeerPacket");
+            new DatabaseHandler();
         }
         public void Stop()
         {

@@ -33,7 +33,8 @@ namespace FeudalMP.src.network.messages
         public void ExecuteServer(int senderPeer)
         {
             //Do not execute if the disconnect was send by the server itself
-            if(senderPeer == NetworkedMultiplayerPeer.TargetPeerServer){
+            if (senderPeer == NetworkedMultiplayerPeer.TargetPeerServer)
+            {
                 return;
             }
             Server server = NodeTreeManager.Instance.ServiceLayer.GetNode<Server>("./Server");
@@ -51,6 +52,10 @@ namespace FeudalMP.src.network.messages
         public byte[] Serialize()
         {
             return NetworkMessageSerializer.Serialize(this);
+        }
+        bool INetworkMessage.RequiresNodeInitialisation()
+        {
+            return false;
         }
     }
 }

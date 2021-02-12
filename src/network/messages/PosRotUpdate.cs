@@ -8,16 +8,20 @@ using Godot;
 
 namespace FeudalMP.src.network.messages
 {
-    [Serializable]
-    public class PosRotUpdate : INetworkMessage
+    
+    public class PosRotUpdate : Node, INetworkMessage
     {
-        private int peerId;
-        private Vector3 translation;
-        private Vector3 rotationDegrees;
-
-        public int PeerId { get => peerId; set => peerId = value; }
-        public Vector3 Translation { get => translation; set => translation = value; }
-        public Vector3 RotationDegrees { get => rotationDegrees; set => rotationDegrees = value; }
+        [Serializable]
+        private class Data : INetworkMessageData
+        {
+            public int peerId;
+            public Vector3 translation;
+            public Vector3 rotationDegrees;
+        }
+        private Data data;
+        public int PeerId { get => data.peerId; set => data.peerId = value; }
+        public Vector3 Translation { get => data.translation; set => data.translation = value; }
+        public Vector3 RotationDegrees { get => data.rotationDegrees; set => data.rotationDegrees = value; }
 
         public INetworkMessage Deserialize(byte[] byteArray)
         {
@@ -49,13 +53,13 @@ namespace FeudalMP.src.network.messages
         public void ExecuteServer(int senderPeer)
         {
             Server server = NodeTreeManager.Instance.ServiceLayer.GetNode<Server>("./Server");
-            server.Clients[senderPeer].Translation = translation;
-            server.Clients[senderPeer].Rotation = rotationDegrees;
+            server.Clients[senderPeer].Translation = data.translation;
+            server.Clients[senderPeer].Rotation = data.rotationDegrees;
             server.NetworkMessageDispatcher.Dispatch(new PosRotUpdate()
             {
                 PeerId = senderPeer,
-                Translation = translation,
-                RotationDegrees = rotationDegrees
+                Translation = data.translation,
+                RotationDegrees = data.rotationDegrees
             }, NetworkedMultiplayerPeer.TargetPeerBroadcast);
         }
 
@@ -67,6 +71,16 @@ namespace FeudalMP.src.network.messages
         public byte[] Serialize()
         {
             return NetworkMessageSerializer.Serialize(this);
+        }
+
+        bool INetworkMessage.RequiresNodeInitialisation()
+        {
+            return true;
+        }
+
+        public INetworkMessageData GetData()
+        {
+            return data;
         }
     }
 }

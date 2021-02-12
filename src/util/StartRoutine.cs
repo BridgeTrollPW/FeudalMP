@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using Godot;
 
 namespace FeudalMP.src.util
@@ -9,6 +7,7 @@ namespace FeudalMP.src.util
         private static readonly Logger logger = new Logger(nameof(StartRoutine));
         public static Error Check()
         {
+            logger.Info("Checking " + OS.GetUserDataDir() +" ...");
             bool firstRun = false;
             File f = new File();
             if (!f.FileExists("user://settings.cfg"))
@@ -51,6 +50,11 @@ namespace FeudalMP.src.util
             //Server
             //
             cf.SetValue(CFG.Server.SECTION, CFG.Server.PORT, 9913);
+            cf.SetValue(CFG.Server.SECTION, CFG.Server.DATABASE_HOST, "127.0.0.1");
+            cf.SetValue(CFG.Server.SECTION, CFG.Server.DATABASE_PORT, 3306);
+            cf.SetValue(CFG.Server.SECTION, CFG.Server.DATABASE_NAME, "feudalmp");
+            cf.SetValue(CFG.Server.SECTION, CFG.Server.DATABASE_USER, "root");
+            cf.SetValue(CFG.Server.SECTION, CFG.Server.DATABASE_USER_PASSWORD, "");
             //
             //Application
             //

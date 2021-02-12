@@ -74,6 +74,11 @@ namespace FeudalMP.src.network.service
         public void RegisterNetworkMessage(INetworkMessage networkMessage)
         {
             MessageRegister.Add(networkMessage.GetNetworkMessageIdentifier(), networkMessage);
+            if (networkMessage.RequiresNodeInitialisation())
+            {
+                AddChild((Node)networkMessage);
+            }
+
         }
     }
 }

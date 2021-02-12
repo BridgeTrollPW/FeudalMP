@@ -54,6 +54,11 @@ namespace FeudalMP.src.network.messages
             return NetworkMessageIdentifier.INITIAL_SYNC;
         }
 
+        public bool RequiresNodeInitialisation()
+        {
+            return false;
+        }
+
         public byte[] Serialize()
         {
             return NetworkMessageSerializer.Serialize(this);
